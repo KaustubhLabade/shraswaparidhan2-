@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Shraswa Paridhan – Costume Rental Studio, Pune{% endblock %}</title>
+  <meta name="description" content="Shraswa Paridhan – Premium school costume & drapery rental in Baner, Pune. Animal, mythology, fancy dress costumes for kids.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --crimson: #C1272D;
+      --crimson-dark: #8B0000;
+      --crimson-light: #E8474D;
+      --turmeric: #E8A117;
+      --turmeric-light: #FFC845;
+      --indigo: #1B2B6B;
+      --indigo-mid: #2D3F8A;
+      --ivory: #FAF7F0;
+      --parchment: #F2EAD8;
+      --warm-dark: #120A04;
+      --text: #1A0E06;
+      --text-muted: #6B5040;
+      --text-light: #9C7E65;
+      --nav-height: 72px;
+      --border: rgba(193,39,45,0.12);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--ivory);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--parchment); }
+    ::-webkit-scrollbar-thumb { background: var(--crimson); border-radius: 3px; }
+
+    /* NAV */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      height: var(--nav-height);
+      background: rgba(250,247,240,0.97);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(1rem, 4vw, 3.5rem);
+      transition: box-shadow 0.3s;
+    }
+    .nav.scrolled { box-shadow: 0 2px 40px rgba(193,39,45,0.1); }
+
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo-emblem {
+      width: 44px; height: 44px;
+      background: var(--crimson);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px; font-weight: 700; color: white; flex-shrink: 0;
+    }
+    .nav-logo-text { display: flex; flex-direction: column; }
+    .nav-logo-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px; font-weight: 700; color: var(--text); line-height: 1.1;
+    }
+    .nav-logo-sub {
+      font-size: 9.5px; color: var(--text-light);
+      letter-spacing: 2.5px; text-transform: uppercase; font-weight: 500;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+    .nav-links a {
+      padding: 8px 18px; border-radius: 6px;
+      font-size: 13.5px; font-weight: 500;
+      color: var(--text-muted); text-decoration: none; transition: all 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--crimson); background: rgba(193,39,45,0.06); }
+    .nav-cta {
+      background: var(--indigo) !important; color: white !important;
+      padding: 9px 22px !important; border-radius: 8px !important; font-weight: 600 !important;
+    }
+    .nav-cta:hover { background: var(--indigo-mid) !important; color: white !important; }
+
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 8px; border: none; background: none;
+    }
+    .nav-hamburger span { width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.3s; }
+
+    .mobile-menu {
+      display: none; position: fixed; top: var(--nav-height); left: 0; right: 0;
+      background: var(--ivory); border-bottom: 1px solid var(--border);
+      padding: 0.75rem; z-index: 999; flex-direction: column; gap: 3px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      padding: 12px 16px; border-radius: 8px; color: var(--text);
+      text-decoration: none; font-weight: 500; font-size: 15px; transition: background 0.2s;
+    }
+    .mobile-menu a:hover { background: var(--parchment); }
+
+    /* KANTHA STRIPE */
+    .kantha-stripe {
+      height: 4px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--crimson) 0, var(--crimson) 12px,
+        var(--turmeric) 12px, var(--turmeric) 20px,
+        var(--indigo) 20px, var(--indigo) 32px,
+        var(--turmeric) 32px, var(--turmeric) 40px
+      );
+    }
+
+    .page-wrapper { padding-top: var(--nav-height); min-height: 100vh; }
+
+    /* FOOTER */
+    footer { background: var(--warm-dark); color: rgba(255,255,255,0.8); padding: 3.5rem clamp(1.5rem, 5vw, 4rem) 2rem; }
+    .footer-grid { display: grid; grid-template-columns: 2.2fr 1fr 1fr; gap: 3rem; margin-bottom: 2.5rem; }
+    .footer-brand-name { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: white; margin-bottom: 10px; }
+    .footer-brand-desc { font-size: 13px; line-height: 1.75; color: rgba(255,255,255,0.45); max-width: 280px; margin-bottom: 22px; }
+    .footer-wa {
+      display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px;
+      border-radius: 8px; background: #25D366; color: white; font-size: 13px;
+      font-weight: 600; text-decoration: none; transition: opacity 0.2s;
+    }
+    .footer-wa:hover { opacity: 0.85; }
+    .footer-col h4 { font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--turmeric); margin-bottom: 18px; font-weight: 600; }
+    .footer-col a, .footer-col p { display: block; font-size: 13px; color: rgba(255,255,255,0.5); text-decoration: none; line-height: 2.1; transition: color 0.2s; }
+    .footer-col a:hover { color: white; }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; color: rgba(255,255,255,0.25); flex-wrap: wrap; gap: 8px;
+    }
+
+    /* WA FLOAT */
+    .wa-float {
+      position: fixed; bottom: 24px; right: 24px; z-index: 900;
+      width: 54px; height: 54px; border-radius: 50%; background: #25D366;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.4); text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s; animation: wa-pulse 3s infinite;
+    }
+    .wa-float:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.55); }
+    @keyframes wa-pulse {
+      0%, 100% { box-shadow: 0 4px 20px rgba(37,211,102,0.4); }
+      50% { box-shadow: 0 4px 30px rgba(37,211,102,0.65), 0 0 0 8px rgba(37,211,102,0.1); }
+    }
+    .wa-float svg { width: 26px; height: 26px; fill: white; }
+
+    /* SECTION UTILS */
+    .section { padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem); }
+    .section-header { text-align: center; margin-bottom: 3rem; }
+    .section-tag {
+      display: inline-block; padding: 4px 14px; border-radius: 3px;
+      background: var(--crimson); color: white; font-size: 10px;
+      font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(30px, 4.5vw, 48px); font-weight: 700;
+      color: var(--text); line-height: 1.15; margin-bottom: 14px;
+    }
+    .section-subtitle { font-size: 15.5px; color: var(--text-muted); max-width: 500px; margin: 0 auto; line-height: 1.75; }
+
+    /* COSTUME CARD */
+    .costume-card {
+      background: white; border-radius: 12px; overflow: hidden;
+      border: 1px solid rgba(193,39,45,0.1);
+      transition: transform 0.3s, box-shadow 0.3s; position: relative;
+    }
+    .costume-card:hover { transform: translateY(-5px); box-shadow: 0 18px 50px rgba(193,39,45,0.12); }
+    .costume-card-img-wrap { position: relative; overflow: hidden; }
+    .costume-card-img {
+      width: 100%; height: 230px; object-fit: cover; display: block;
+      background: var(--parchment); transition: transform 0.45s ease;
+    }
+    .costume-card:hover .costume-card-img { transform: scale(1.05); }
+    .costume-card-body { padding: 16px 18px 18px; }
+    .costume-card-name {
+      font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 18px;
+      color: var(--text); margin-bottom: 4px; line-height: 1.2;
+    }
+    .costume-card-size {
+      font-size: 11.5px; color: var(--text-light); margin-bottom: 12px;
+      font-weight: 500; text-transform: uppercase; letter-spacing: 0.8px;
+    }
+    .badge-available {
+      display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 3px;
+      background: rgba(34,197,94,0.1); color: #166534; font-size: 11px; font-weight: 600;
+      margin-bottom: 14px; letter-spacing: 0.5px;
+    }
+    .badge-unavailable {
+      display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 3px;
+      background: rgba(193,39,45,0.08); color: var(--crimson); font-size: 11px; font-weight: 600;
+      margin-bottom: 14px; letter-spacing: 0.5px;
+    }
+    .enquire-btn {
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      width: 100%; padding: 11px; background: #25D366; color: white;
+      border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; transition: background 0.2s;
+    }
+    .enquire-btn:hover { background: #1DA851; }
+
+    /* GRID */
+    .costume-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
+
+    /* PAGE HERO */
+    .page-hero {
+      background: var(--indigo); padding: clamp(3.5rem, 7vw, 6rem) clamp(1.5rem, 5vw, 5rem) 3rem;
+      position: relative; overflow: hidden;
+    }
+    .page-hero-decor {
+      position: absolute; right: -20px; top: 50%; transform: translateY(-50%);
+      font-size: 200px; opacity: 0.05; pointer-events: none; line-height: 1;
+    }
+    .page-hero-tag {
+      display: inline-block; padding: 4px 14px; border-radius: 3px;
+      background: rgba(232,161,23,0.25); color: var(--turmeric-light);
+      font-size: 10.5px; font-weight: 700; letter-spacing: 2.5px;
+      text-transform: uppercase; margin-bottom: 18px;
+    }
+    .page-hero-title {
+      font-family: 'Cormorant Garamond', serif; font-size: clamp(38px, 5.5vw, 62px);
+      font-weight: 700; color: white; line-height: 1.1;
+    }
+    .page-hero-sub { font-size: 16px; color: rgba(255,255,255,0.55); margin-top: 14px; max-width: 520px; line-height: 1.75; }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .costume-grid { grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 12px; }
+      .costume-card-img { height: 175px; }
+    }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<nav class="nav" id="mainNav">
+  <a href="/" class="nav-logo">
+    <div class="nav-logo-emblem">SP</div>
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Shraswa Paridhan</span>
+      <span class="nav-logo-sub">Costume Rental Studio</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/" class="{% block nav_home %}{% endblock %}">Home</a></li>
+    <li><a href="/about/" class="{% block nav_about %}{% endblock %}">About</a></li>
+    <li><a href="/contact/" class="{% block nav_contact %}{% endblock %}">Contact</a></li>
+    <li><a href="https://wa.me/919139549644" class="nav-cta" target="_blank">📲 Book Now</a></li>
+  </ul>
+  <button class="nav-hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/">Home</a>
+  <a href="/about/">About</a>
+  <a href="/contact/">Contact</a>
+  <a href="https://wa.me/919139549644" style="background:#25D366;color:white;margin-top:6px;border-radius:8px;">📲 Book on WhatsApp</a>
+</div>
+
+<div class="kantha-stripe"></div>
+<main class="page-wrapper">{% block content %}{% endblock %}</main>
+<div class="kantha-stripe"></div>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">Shraswa Paridhan</div>
+      <p class="footer-brand-desc">Your trusted costume rental partner for school events, stage performances, and celebrations in Baner, Pune since 2020.</p>
+      <a href="https://wa.me/919139549644" class="footer-wa" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Chat on WhatsApp
+      </a>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <a href="/">Home</a>
+      <a href="/about/">About Us</a>
+      <a href="/contact/">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <p>Swarda: +91 91395 49644</p>
+      <p>Shraddha: +91 77091 97495</p>
+      <p>Baner, Pune</p>
+      <p>10 AM – 8 PM</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Shraswa Paridhan. All rights reserved.</span>
+    <span>shraswaparidhan.com</span>
+  </div>
+</footer>
+
+<a href="https://wa.me/919139549644" class="wa-float" target="_blank" title="Chat on WhatsApp">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 20); });
+  function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

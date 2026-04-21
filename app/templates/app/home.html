@@ -1,0 +1,393 @@
+{% extends 'app/base.html' %}
+{% block nav_home %}active{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: calc(100vh - var(--nav-height));
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    background: var(--indigo);
+    display: flex; flex-direction: column; justify-content: center;
+    padding: clamp(3rem, 7vw, 6rem) clamp(2rem, 5vw, 5rem);
+    position: relative; overflow: hidden;
+    z-index: 1;
+  }
+  .hero-left::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 80% 20%, rgba(232,161,23,0.12) 0%, transparent 50%),
+      radial-gradient(circle at 10% 90%, rgba(193,39,45,0.15) 0%, transparent 50%);
+  }
+  .hero-left-content { position: relative; z-index: 2; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px; border-radius: 4px;
+    border: 1px solid rgba(232,161,23,0.35);
+    background: rgba(232,161,23,0.1);
+    color: var(--turmeric-light); font-size: 11px;
+    font-weight: 600; letter-spacing: 2.5px;
+    text-transform: uppercase; margin-bottom: 24px;
+    width: fit-content;
+  }
+  .hero-badge-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--turmeric-light);
+    animation: pulse 1.8s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 5.5vw, 74px);
+    font-weight: 700; line-height: 1.05;
+    color: white; margin-bottom: 6px;
+  }
+  .hero-title em {
+    font-style: italic; color: var(--turmeric-light);
+    display: block;
+  }
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 2.2vw, 24px);
+    color: rgba(255,255,255,0.5); font-weight: 400;
+    margin-bottom: 22px;
+  }
+  .hero-desc {
+    font-size: 15px; color: rgba(255,255,255,0.55);
+    line-height: 1.8; margin-bottom: 38px; max-width: 420px;
+  }
+
+  .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 44px; }
+  .btn-hero-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 28px; border-radius: 8px;
+    background: var(--crimson); color: white;
+    font-weight: 600; font-size: 14.5px; text-decoration: none;
+    transition: all 0.2s; box-shadow: 0 4px 24px rgba(193,39,45,0.35);
+  }
+  .btn-hero-primary:hover { background: var(--crimson-dark); transform: translateY(-2px); }
+  .btn-hero-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 28px; border-radius: 8px;
+    background: transparent; color: rgba(255,255,255,0.8);
+    font-weight: 500; font-size: 14.5px; text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.2); transition: all 0.2s;
+  }
+  .btn-hero-ghost:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.35); }
+
+  .hero-stats {
+    display: flex; gap: 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 28px;
+  }
+  .hero-stat {
+    flex: 1; padding-right: 24px; margin-right: 24px;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+  .hero-stat:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+  .hero-stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px; font-weight: 700;
+    color: var(--turmeric-light); line-height: 1;
+  }
+  .hero-stat-label { font-size: 11.5px; color: rgba(255,255,255,0.4); margin-top: 5px; letter-spacing: 0.3px; }
+
+  /* Hero Right - Image Panel */
+  .hero-right {
+    position: relative; overflow: hidden;
+    background: var(--parchment);
+  }
+  .hero-right img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center top;
+    display: block;
+  }
+  .hero-right-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(27,43,107,0.15) 0%, transparent 60%);
+  }
+  .hero-right-badge {
+    position: absolute; bottom: 28px; left: 24px;
+    background: white; border-radius: 10px;
+    padding: 14px 18px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .hero-right-badge-icon {
+    width: 44px; height: 44px; border-radius: 8px;
+    background: rgba(193,39,45,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .hero-right-badge-text { font-size: 13px; font-weight: 600; color: var(--text); }
+  .hero-right-badge-sub { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+
+  /* CATEGORY BAR */
+  .cat-bar {
+    background: white; border-bottom: 1px solid rgba(193,39,45,0.1);
+    padding: 0 clamp(1rem, 5vw, 4rem);
+    display: flex; align-items: center; gap: 6px;
+    overflow-x: auto; white-space: nowrap; scrollbar-width: none;
+  }
+  .cat-bar::-webkit-scrollbar { display: none; }
+  .cat-bar-label {
+    font-size: 10.5px; color: var(--text-light); font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase; flex-shrink: 0; padding: 16px 0;
+  }
+  .cat-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 16px; border-radius: 4px;
+    font-size: 13px; font-weight: 500;
+    color: var(--text-muted); text-decoration: none;
+    border: 1px solid transparent; flex-shrink: 0; transition: all 0.2s;
+  }
+  .cat-pill:hover { background: var(--parchment); color: var(--crimson); border-color: rgba(193,39,45,0.2); }
+  .cat-pill.active { background: rgba(193,39,45,0.07); color: var(--crimson); border-color: rgba(193,39,45,0.2); }
+
+  /* CATEGORY SECTIONS */
+  .cat-section {
+    padding: 3rem clamp(1.5rem, 5vw, 4rem);
+    border-bottom: 1px solid rgba(193,39,45,0.07);
+  }
+  .cat-section:last-child { border-bottom: none; }
+  .cat-section-head {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;
+  }
+  .cat-section-title {
+    display: flex; align-items: center; gap: 14px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 700; color: var(--text);
+  }
+  .cat-section-title::before {
+    content: '';
+    display: block; width: 3px; height: 28px; border-radius: 2px;
+    background: var(--crimson);
+  }
+  .cat-view-all {
+    font-size: 12.5px; font-weight: 600; color: var(--crimson);
+    text-decoration: none; letter-spacing: 0.3px; transition: opacity 0.2s;
+  }
+  .cat-view-all:hover { opacity: 0.7; }
+
+  /* WHY US */
+  .why-us {
+    background: var(--indigo);
+    padding: clamp(3.5rem, 6vw, 5.5rem) clamp(1.5rem, 5vw, 4rem);
+  }
+  .why-header { text-align: center; margin-bottom: 3.5rem; }
+  .why-header .section-tag { background: rgba(232,161,23,0.2); color: var(--turmeric-light); }
+  .why-section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(30px, 4vw, 46px); font-weight: 700;
+    color: white; margin-bottom: 12px;
+  }
+  .why-section-sub { font-size: 15px; color: rgba(255,255,255,0.4); }
+  .why-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 1px; background: rgba(255,255,255,0.07);
+    border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.07);
+  }
+  .why-item {
+    padding: 2.2rem 1.5rem; background: rgba(27,43,107,0.5);
+    text-align: center; transition: background 0.3s;
+  }
+  .why-item:hover { background: rgba(193,39,45,0.15); }
+  .why-icon { font-size: 34px; margin-bottom: 14px; display: block; }
+  .why-title { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 700; color: white; margin-bottom: 8px; }
+  .why-desc { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.65; }
+
+  /* CTA BANNER */
+  .cta-banner {
+    background: var(--crimson);
+    padding: 3.5rem clamp(1.5rem, 5vw, 4rem);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 2rem; flex-wrap: wrap; position: relative; overflow: hidden;
+  }
+  .cta-banner::before {
+    content: '🎭';
+    position: absolute; right: 15%; top: 50%; transform: translateY(-50%);
+    font-size: 160px; opacity: 0.06; pointer-events: none;
+  }
+  .cta-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(24px, 3.5vw, 36px); font-weight: 700;
+    color: white; margin-bottom: 8px;
+  }
+  .cta-text p { color: rgba(255,255,255,0.7); font-size: 15px; }
+  .btn-cta-white {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 30px; border-radius: 8px;
+    background: white; color: var(--crimson);
+    font-weight: 700; font-size: 14.5px; text-decoration: none;
+    flex-shrink: 0; transition: all 0.2s; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .btn-cta-white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.2); }
+
+  @media (max-width: 920px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { height: 50vw; max-height: 380px; }
+    .hero-left { padding-bottom: 3rem; }
+  }
+  @media (max-width: 600px) {
+    .hero-right { height: 55vw; }
+    .why-grid { grid-template-columns: 1fr 1fr; }
+    .why-item:nth-child(5) { grid-column: span 2; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-left-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Baner, Pune
+      </div>
+      <h1 class="hero-title">
+        Costumes that
+        <em>Steal the Show</em>
+      </h1>
+      <p class="hero-subtitle">Drapery & Rental Studio</p>
+      <p class="hero-desc">
+        Animal costumes, mythology characters, fancy dress & stage drapery —
+        bringing school performances to life with premium quality at affordable rentals.
+      </p>
+      <div class="hero-btns">
+        <a href="#costumes" class="btn-hero-primary">🎭 Browse Costumes</a>
+        <a href="https://wa.me/919139549644" class="btn-hero-ghost" target="_blank">📲 WhatsApp Us</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-num">100+</div>
+          <div class="hero-stat-label">Costumes</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">500+</div>
+          <div class="hero-stat-label">Happy Clients</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">5★</div>
+          <div class="hero-stat-label">Google Rating</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    {% if categories %}{% for c in categories %}{% for d in c.dresses.all %}{% if d.image %}
+    <img src="{{ d.image.url }}" alt="Shraswa Paridhan Costumes" loading="eager">
+    {% endif %}{% endfor %}{% endfor %}{% endif %}
+    <div class="hero-right-overlay"></div>
+    <div class="hero-right-badge">
+      <div class="hero-right-badge-icon">🌟</div>
+      <div>
+        <div class="hero-right-badge-text">5-Star Rated</div>
+        <div class="hero-right-badge-sub">Trusted by 500+ families</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORY PILL BAR -->
+<div class="cat-bar" id="costumes">
+  <span class="cat-bar-label">Browse:</span>
+  {% for category in categories %}
+  <a href="#cat-{{ category.id }}" class="cat-pill">{{ category.name }}</a>
+  {% endfor %}
+</div>
+
+<!-- CATEGORY SECTIONS -->
+{% for category in categories %}
+{% if category.dresses.count > 0 %}
+<section class="cat-section" id="cat-{{ category.id }}">
+  <div class="cat-section-head">
+    <h2 class="cat-section-title">{{ category.name }}</h2>
+    <a href="/category/{{ category.id }}/" class="cat-view-all">View all →</a>
+  </div>
+  <div class="costume-grid">
+    {% for dress in category.dresses.all %}
+    <div class="costume-card">
+      <div class="costume-card-img-wrap">
+        <img src="{{ dress.image.url }}" alt="{{ dress.name }}" class="costume-card-img" loading="lazy">
+      </div>
+      <div class="costume-card-body">
+        <div class="costume-card-name">{{ dress.name }}</div>
+        <div class="costume-card-size">Size: {{ dress.size }}</div>
+        {% if dress.available %}
+          <div class="badge-available">✓ Available</div>
+        {% else %}
+          <div class="badge-unavailable">✕ Unavailable</div>
+        {% endif %}
+        <a href="https://wa.me/919139549644?text=Hi!+I'm+interested+in+renting+{{ dress.name|urlencode }}+(Size:+{{ dress.size|urlencode }})+from+Shraswa+Paridhan."
+           class="enquire-btn" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Enquire on WhatsApp
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endfor %}
+
+<!-- WHY US -->
+<section class="why-us">
+  <div class="why-header">
+    <div class="section-tag" style="background:rgba(232,161,23,0.2);color:var(--turmeric-light);">Why Choose Us</div>
+    <h2 class="why-section-title">Trusted by 500+ Schools & Families</h2>
+    <p class="why-section-sub">Premium costumes, clean outfits, unbeatable prices.</p>
+  </div>
+  <div class="why-grid">
+    <div class="why-item">
+      <span class="why-icon">🎭</span>
+      <div class="why-title">100+ Costumes</div>
+      <div class="why-desc">Widest collection of animal, mythology & fancy dress costumes in Pune</div>
+    </div>
+    <div class="why-item">
+      <span class="why-icon">🧼</span>
+      <div class="why-title">Clean & Hygienic</div>
+      <div class="why-desc">Every costume professionally cleaned before rental — safe for children</div>
+    </div>
+    <div class="why-item">
+      <span class="why-icon">💰</span>
+      <div class="why-title">Affordable Rental</div>
+      <div class="why-desc">School-budget friendly pricing with bulk order discounts available</div>
+    </div>
+    <div class="why-item">
+      <span class="why-icon">🚚</span>
+      <div class="why-title">Timely Delivery</div>
+      <div class="why-desc">Reliable on-time delivery for school events and competitions</div>
+    </div>
+    <div class="why-item">
+      <span class="why-icon">🌟</span>
+      <div class="why-title">5-Star Quality</div>
+      <div class="why-desc">Handpicked, well-maintained outfits that look stunning on stage</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-banner">
+  <div class="cta-text">
+    <h2>Ready to make your event magical? 🎉</h2>
+    <p>Call or WhatsApp us — we'll help you find the perfect costume!</p>
+  </div>
+  <a href="https://wa.me/919139549644?text=Hi!+I+need+costumes+for+a+school+event.+Please+help." class="btn-cta-white" target="_blank">
+    📲 Book on WhatsApp
+  </a>
+</div>
+
+{% endblock %}
