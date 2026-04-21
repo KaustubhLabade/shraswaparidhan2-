@@ -4,9 +4,13 @@ from .models import Category, Dress
 def home(request):
     categories = Category.objects.filter(parent=None).prefetch_related('dresses', 'subcategories__dresses')
     featured = Dress.objects.filter(available=True)[:6]
+    dresses = Dress.objects.all() 
+    hero_image = Dress.objects.filter(image__isnull=False).exclude(image='').first()
     return render(request, 'app/home.html', {
         'categories': categories,
         'featured': featured,
+        'dresses': dresses,   
+        'hero_image': hero_image,
     })
 
 def about(request):
