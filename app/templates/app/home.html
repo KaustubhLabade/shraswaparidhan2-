@@ -285,12 +285,12 @@
     </div>
   </div>
 
-  <div class="hero-right">
-    {% for c in categories %}{% for d in c.dresses.all %}{% if d.image and not hero_img_shown %}
-    <img src="{{ d.image.url }}" alt="Shraswa Paridhan Costumes" loading="eager">
-      {% with hero_img_shown=True %}{% endwith %}
-    {% endif %}{% endfor %}{% endfor %}
-    <div class="hero-right-overlay"></div>
+<div class="hero-right">
+  {% if hero_image %}
+    <img src="{{ hero_image.image.url }}" alt="Shraswa Paridhan Costumes" loading="eager">
+  {% endif %}
+  <div class="hero-right-overlay"></div>
+
     <div class="hero-right-badge">
       <div class="hero-right-badge-icon">🌟</div>
       <div>
