@@ -10,7 +10,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
-    'https://shraswaparidhan-com.onrender.com/',
+    'shraswaparidhan-com.onrender.com/',
     'shraswaparidhan.com',
     'www.shraswaparidhan.com',
 ]
